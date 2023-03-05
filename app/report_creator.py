@@ -15,40 +15,51 @@ def get_coordinate(row: int, col: str):
 
 class ReportCreator:
     LOOKUP_TABLE = [
-        ('G3', 'AA'),
-        ('B4', 'C'),
-        ('O8', 'D', lambda x: -x),
-        ('O10', 'E'),
-        ('O11', 'F'),
-        ('O12', 'G'),
-        ('O14', 'J'),
-        ('O15', 'K'),
-        ('O16', 'L'),
-        ('O18', 'H'),
-        ('O19', 'I'),
-        ('O25', 'P'),
-        ('O26', 'Q'),
-        ('O29', 'S'),
-        ('O30', 'V'),
-        ('O31', 'W')
+        ('J3', 'D'),
+
+        ('D4', 'C'),
+        
+        ('V21', 'I'),
+        ('V22', 'J'),
+        ('V23', 'E'),
+        
+        ('V28', 'K'),
+
+        ('V31', 'N'),
+        ('V32', 'O'),
+        ('V33', 'P'),
+
+        ('V36', 'L'),
+        ('V37', 'M'),
+
+        ('V51', 'R'),
+        ('V52', 'S'),
+        ('V53', 'V'),
+
+        ('V56', 'T'),
+        ('V57', 'U'),
+
+        ('V79', 'Z'),
+        ('V80', 'AA'),
+        ('V81', 'X'),
     ]
 
-    def __init__(self, path_to_source, path_to_template, path_to_out_folder):
-        self.old_source = ('.' in path_to_source[-1:-4])
+    def __init__(self, path_to_source, path_to_template, path_to_out_folder):       
+        self.excel = win32.gencache.EnsureDispatch('Excel.Application')
+        
+        self.old_source = (path_to_source[-4] == '.')
         if self.old_source:
             path_to_source = self.xls2xlsx(path_to_source)
             # raise Exception('File with the xlsx extension was expected.')
         self.path_to_source = path_to_source
 
-        self.old_template = ('.' in path_to_template[-1:-4])
+        self.old_template = (path_to_template[-4] == '.')
         if self.old_template:
             path_to_template = self.xls2xlsx(path_to_template)
             # raise Exception('File with the xlsx extension was expected.')
         self.path_to_template = path_to_template
 
         self.path_to_out_folder = path_to_out_folder
-
-        self.excel = win32.DispatchEx('Excel.Application')
 
         # source workbook
         self.source_wb = load_workbook(self.path_to_source)
